@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0b0f19">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="description" content="CISSP試験の略語・重要概念を高速周回するモバイル特化型フラッシュカードアプリ">
+<title>CISSP Quick Memorizer</title>
+<style>
+:root{
+  --bg:#0b0f19;--bg2:#111827;--bg3:#1a2235;
+  --cb:rgba(255,255,255,0.07);
+  --ac:#00d4aa;--ac2:#7c3aed;
+  --tx:#e2e8f0;--tm:#64748b;
+  --gd:#10b981;--ag:#ef4444;
+  --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Menlo,Monaco,Consolas,monospace;
+  --sans:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{height:100%;}
+body{height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:var(--sans);-webkit-tap-highlight-color:transparent;user-select:none;}
+button{font-family:var(--sans);cursor:pointer;}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 6px;flex-shrink:0;}
+.hl{display:flex;align-items:center;gap:8px;}
+.title{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ac);letter-spacing:-.5px;}
+.hcount{font-family:var(--mono);font-size:11px;color:var(--tm);}
+.hr{display:flex;align-items:center;gap:6px;}
+.mtog{display:flex;background:var(--bg3);border:1px solid var(--cb);border-radius:8px;overflow:hidden;}
+.mbtn{padding:5px 10px;font-size:11px;font-family:var(--mono);font-weight:600;border:none;background:none;color:var(--tm);transition:.2s;}
+.mbtn.on{background:var(--ac);color:#000;}
+.ibtn{width:34px;height:34px;background:var(--bg3);border:1px solid var(--cb);border-radius:8px;color:var(--tm);display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;}
+.ibtn:active{transform:scale(.9);}
+.dbar{display:flex;gap:5px;padding:4px 14px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.dbar::-webkit-scrollbar{display:none;}
+.chip{padding:4px 11px;border-radius:20px;font-family:var(--mono);font-size:11px;font-weight:700;white-space:nowrap;border:1.5px solid transparent;background:var(--bg3);color:var(--tm);transition:.18s;cursor:pointer;}
+.chip[data-d=All]{--c:#00d4aa;}.chip[data-d=D1]{--c:#f87171;}.chip[data-d=D2]{--c:#fb923c;}
+.chip[data-d=D3]{--c:#fbbf24;}.chip[data-d=D4]{--c:#34d399;}.chip[data-d=D5]{--c:#22d3ee;}
+.chip[data-d=D6]{--c:#60a5fa;}.chip[data-d=D7]{--c:#a78bfa;}.chip[data-d=D8]{--c:#f472b6;}
+.chip.on{color:var(--c);border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);}
+.divline{height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);margin:2px 14px;opacity:.2;flex-shrink:0;}
+.pwrap{padding:5px 14px 3px;flex-shrink:0;}
+.prow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--tm);margin-bottom:4px;}
+.pbg{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .4s;}
+.ctr{text-align:center;font-family:var(--mono);font-size:11px;color:var(--tm);padding:3px 0;flex-shrink:0;}
+.ca{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 14px;position:relative;overflow:hidden;min-height:0;}
+.si{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:12px;font-weight:700;padding:7px 12px;border-radius:8px;letter-spacing:1px;opacity:0;pointer-events:none;z-index:5;transition:opacity .1s;}
+.si-g{right:18px;color:var(--gd);border:2px solid var(--gd);background:rgba(16,185,129,.12);}
+.si-a{left:18px;color:var(--ag);border:2px solid var(--ag);background:rgba(239,68,68,.12);}
+.scene{width:100%;max-width:380px;height:100%;max-height:450px;perspective:1200px;cursor:pointer;}
+.c3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .36s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.c3d.flip{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;border:1px solid var(--cb);display:flex;flex-direction:column;overflow:hidden;}
+.ffront{background:linear-gradient(145deg,#141c2e 0%,#0e1726 70%,#0b1420 100%);}
+.fback{background:linear-gradient(145deg,#1a1535 0%,#131c30 70%,#0f1828 100%);transform:rotateY(180deg);}
+.ffront::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,170,.4),transparent);}
+.fi{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;position:relative;}
+.fdm{position:absolute;top:18px;left:18px;right:18px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+.badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.fabbr{font-family:var(--mono);font-size:clamp(44px,13vw,72px);font-weight:800;letter-spacing:-2px;color:#fff;text-align:center;line-height:1.05;filter:drop-shadow(0 0 28px rgba(0,212,170,.22));}
+.fabbr.rv{font-family:var(--sans);font-size:14px;font-weight:400;letter-spacing:normal;line-height:1.65;filter:none;color:var(--tx);text-align:left;width:100%;}
+.ffja{font-size:15px;color:var(--tm);margin-top:8px;text-align:center;}
+.ldots{position:absolute;bottom:18px;display:flex;gap:5px;}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--bg3);}
+.ldot.l1{background:#fbbf24;}.ldot.l2{background:#10b981;}
+.bi{display:flex;flex-direction:column;height:100%;padding:16px 18px;}
+.bh{border-bottom:1px solid var(--cb);padding-bottom:10px;margin-bottom:10px;}
+.babbr{font-family:var(--mono);font-size:26px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.bdm{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0;}
+.ben{font-size:14px;font-weight:600;color:var(--ac);line-height:1.3;}
+.ca2{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.ltog{display:flex;width:fit-content;background:rgba(0,0,0,.3);border:1px solid var(--cb);border-radius:7px;overflow:hidden;margin-bottom:10px;}
+.lbtn{padding:4px 14px;font-family:var(--mono);font-size:11px;font-weight:700;border:none;background:none;color:var(--tm);transition:.18s;}
+.lbtn.on{background:var(--ac2);color:#fff;}
+.ctxt{flex:1;overflow-y:auto;line-height:1.7;font-size:14px;color:var(--tx);scrollbar-width:thin;scrollbar-color:var(--bg3) transparent;}
+.ctxt.en{font-family:Georgia,serif;}
+.ctxt.ja{font-family:var(--sans);}
+.ph{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;color:var(--tm);text-align:center;padding:20px;}
+.ph.on{display:flex;}
+.phi{font-size:52px;opacity:.22;}
+.pht{font-size:14px;line-height:1.6;}
+.cmp{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;}
+.cmp.on{display:flex;}
+.cemi{font-size:60px;}.ctit{font-size:20px;font-weight:700;}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
+.sitem{background:var(--bg3);border:1px solid var(--cb);border-radius:12px;padding:12px;text-align:center;}
+.snum{font-family:var(--mono);font-size:22px;font-weight:800;}
+.slbl{font-size:10px;color:var(--tm);margin-top:2px;}
+.s0 .snum{color:#f87171;}.s1 .snum{color:#fbbf24;}.s2 .snum{color:#34d399;}
+.hint{text-align:center;font-size:10px;color:rgba(100,116,139,.3);font-family:var(--mono);flex-shrink:0;padding-bottom:2px;}
+.acts{display:flex;gap:10px;padding:10px 14px 20px;flex-shrink:0;}
+.abtn{flex:1;height:54px;border-radius:14px;border:none;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;transition:.18s;position:relative;overflow:hidden;}
+.abtn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.15s;}
+.abtn:active::after{background:rgba(255,255,255,.08);}
+.abtn:active{transform:scale(.96);}
+.abtn.ag{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.abtn.gd{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25);}
+.asub{font-size:10px;opacity:.6;font-family:var(--mono);}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .28s;}
+.ov.on{opacity:1;pointer-events:all;}
+.sheet{background:var(--bg2);border-radius:22px 22px 0 0;border:1px solid var(--cb);border-bottom:none;width:100%;max-width:480px;margin:0 auto;max-height:88vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.ov.on .sheet{transform:translateY(0);}
+.shandle{width:38px;height:4px;background:rgba(255,255,255,.12);border-radius:2px;margin:11px auto 0;flex-shrink:0;}
+.shdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;flex-shrink:0;}
+.stit{font-size:17px;font-weight:700;}
+.scls{background:var(--bg3);border:none;color:var(--tm);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.sbody{padding:0 18px 28px;overflow-y:auto;flex:1;}
+.flbl{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tm);margin-bottom:6px;}
+textarea{width:100%;background:var(--bg);border:1px solid var(--cb);border-radius:10px;color:var(--tx);padding:10px;font-size:12px;font-family:var(--mono);resize:vertical;min-height:110px;outline:none;transition:border-color .2s;}
+textarea:focus{border-color:var(--ac);}
+.itabs{display:flex;background:var(--bg);border:1px solid var(--cb);border-radius:8px;overflow:hidden;margin-bottom:14px;}
+.itab{flex:1;padding:7px;font-size:12px;font-family:var(--mono);text-align:center;border:none;background:none;color:var(--tm);transition:.18s;}
+.itab.on{background:var(--bg3);color:var(--ac);font-weight:700;}
+.tsv-h{font-size:10px;color:var(--tm);font-family:var(--mono);margin-bottom:6px;line-height:1.5;}
+.bp{width:100%;height:46px;background:var(--ac);border:none;border-radius:10px;color:#000;font-size:14px;font-weight:700;cursor:pointer;transition:.18s;margin-top:8px;}
+.bp:active{transform:scale(.97);}
+.bs{width:100%;height:42px;background:transparent;border:1px solid var(--cb);border-radius:10px;color:var(--tx);font-size:13px;cursor:pointer;margin-top:8px;}
+.bs:active{background:var(--bg3);}
+.bd{width:100%;height:42px;background:transparent;border:1px solid rgba(239,68,68,.3);border-radius:10px;color:#f87171;font-size:13px;cursor:pointer;margin-top:8px;}
+.slist{display:flex;flex-direction:column;gap:8px;}
+.si2{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--bg3);border:1px solid var(--cb);border-radius:12px;}
+.sil{display:flex;flex-direction:column;gap:2px;}
+.sit{font-size:14px;font-weight:600;}.sid{font-size:11px;color:var(--tm);}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--cb);border-radius:10px;padding:9px 18px;font-size:13px;color:var(--tx);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap;}
+.toast.on{opacity:1;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="hdr">
+    <div class="hl"><span class="title">CISSP QM</span><span class="hcount" id="hcount">0 cards</span></div>
+    <div class="hr">
+      <div class="mtog">
+        <button class="mbtn on" id="bNorm" onclick="setMode(0)">通常</button>
+        <button class="mbtn" id="bRev" onclick="setMode(1)">逆引き</button>
+      </div>
+      <button class="ibtn" onclick="openM('settings')">⚙</button>
+      <button class="ibtn" onclick="openM('import')">＋</button>
+    </div>
+  </header>
+  <div class="dbar" id="dbar">
+    <div class="chip on" data-d="All" onclick="togD('All')">All</div>
+    <div class="chip" data-d="D1" onclick="togD('D1')">D1</div>
+    <div class="chip" data-d="D2" onclick="togD('D2')">D2</div>
+    <div class="chip" data-d="D3" onclick="togD('D3')">D3</div>
+    <div class="chip" data-d="D4" onclick="togD('D4')">D4</div>
+    <div class="chip" data-d="D5" onclick="togD('D5')">D5</div>
+    <div class="chip" data-d="D6" onclick="togD('D6')">D6</div>
+    <div class="chip" data-d="D7" onclick="togD('D7')">D7</div>
+    <div class="chip" data-d="D8" onclick="togD('D8')">D8</div>
+  </div>
+  <div class="divline"></div>
+  <div class="pwrap">
+    <div class="prow"><span id="plbl">0 / 0</span><span id="pstat">未: 0 | 復: 0 | 済: 0</span></div>
+    <div class="pbg"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  </div>
+  <div class="ctr" id="ctr">- / -</div>
+  <div class="ca" id="ca">
+    <div class="si si-a" id="sia">x AGAIN</div>
+    <div class="si si-g" id="sig">✓ GOOD</div>
+    <div class="scene" id="scene" onclick="onCC(event)">
+      <div class="c3d" id="c3d">
+        <div class="face ffront">
+          <div class="fi">
+            <div class="fdm" id="fdm"></div>
+            <div class="fabbr" id="fabbr"></div>
+            <div class="ffja" id="ffja" style="display:none"></div>
+            <div class="ldots" id="ldots"></div>
+          </div>
+        </div>
+        <div class="face fback">
+          <div class="bi">
+            <div class="bh">
+              <div class="babbr" id="babbr"></div>
+              <div class="bdm" id="bdm"></div>
+              <div class="ben" id="ben"></div>
+            </div>
+            <div class="ca2">
+              <div class="ltog" id="ltog">
+                <button class="lbtn on" id="bEN" onclick="setL('en',event)">EN</button>
+                <button class="lbtn" id="bJA" onclick="setL('ja',event)">JA</button>
+              </div>
+              <div class="ctxt en" id="ctxt"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ph" id="ept">
+      <div class="phi">📚</div>
+      <div class="pht">カードがありません<br>「＋」からインポートするか<br>フィルターを変更してください</div>
+      <button class="bp" style="width:auto;padding:0 24px;margin:0" onclick="openM('import')">カードを追加</button>
+    </div>
+    <div class="cmp" id="cmp">
+      <div class="cemi">🎉</div>
+      <div class="ctit">セット完了！</div>
+      <div class="sgrid" id="sgrid"></div>
+      <button class="bp" style="width:100%" onclick="restart(false)">もう一度周回する</button>
+      <button class="bs" style="margin-top:0" onclick="restart(true)">未習得のみ再スタート</button>
+    </div>
+  </div>
+  <div class="hint" id="hint">← もう一度 | タップで反転 | 覚えた →</div>
+  <div class="acts" id="acts">
+    <button class="abtn ag" onclick="doA()"><span>←</span><div><div>もう一度</div><div class="asub">Again</div></div></button>
+    <button class="abtn gd" onclick="doG()"><div><div>覚えた</div><div class="asub">Good</div></div><span>→</span></button>
+  </div>
+</div>
+<div class="ov" id="m-import">
+  <div class="sheet">
+    <div class="shandle"></div>
+    <div class="shdr"><span class="stit">カードをインポート</span><button class="scls" onclick="closeM('import')">✕</button></div>
+    <div class="sbody">
+      <div class="itabs">
+        <button class="itab on" id="itj" onclick="setIT('json')">JSON</button>
+        <button class="itab" id="itt" onclick="setIT('tsv')">TSV / CSV</button>
+      </div>
+      <div id="iJ">
+        <label class="flbl">JSONデータを貼り付け</label>
+        <textarea id="taJ" placeholder='[{"abbr":"IAM","domain":["D5"],"full_ja":"ID管理","full_en":"Identity and Access Management","concept_en":"...","concept_ja":"..."}]'></textarea>
+        <button class="bp" onclick="impJ()">JSONをインポート</button>
+      </div>
+      <div id="iT" style="display:none">
+        <label class="flbl">TSV / CSVを貼り付け（ヘッダー不要）</label>
+        <div class="tsv-h">列順: 略語 | ドメイン(D1,D3) | 正式名(日) | 正式名(英) | Concept(英) | Concept(日)</div>
+        <textarea id="taT" placeholder="MAC&#9;D3,D4&#9;強制アクセス制御&#9;Mandatory Access Control&#9;...&#9;..."></textarea>
+        <button class="bp" onclick="impT()">TSVをインポート</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ov" id="m-settings">
+  <div class="sheet">
+    <div class="shandle"></div>
+    <div class="shdr"><span class="stit">設定</span><button class="scls" onclick="closeM('settings')">✕</button></div>
+    <div class="sbody">
+      <div class="slist">
+        <div class="si2"><div class="sil"><span class="sit">デッキ概要</span><span class="sid" id="dinfo">0枚</span></div></div>
+        <div class="si2" style="cursor:pointer" onclick="doExp()">
+          <div class="sil"><span class="sit">📤 JSONエクスポート</span><span class="sid">全カードと進捗をダウンロード</span></div>
+          <span style="color:var(--tm)">›</span>
+        </div>
+        <button class="bs" onclick="doRst()">進捗をリセット（全カード Level 0 に戻す）</button>
+        <button class="bd" onclick="doClr()">⚠️ 全カードを削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const SK='cissp_qm_v3';
+const SEED=[
+  {abbr:'MAC',domain:['D3'],full_ja:'強制アクセス制御',full_en:'Mandatory Access Control',
+   concept_en:"Access control model where the OS constrains a subject's access based on security labels and clearances. Common in military/government environments.",
+   concept_ja:'セキュリティラベルとクリアランスに基づきOSが一元的に権限を強制するモデル。軍・政府機関向けで多用される。'},
+  {abbr:'MAC',domain:['D3','D4'],full_ja:'メッセージ認証コード',full_en:'Message Authentication Code',
+   concept_en:'A cryptographic checksum using a symmetric key providing data integrity and data origin authentication. Detects unauthorized message modification.',
+   concept_ja:'共通鍵で生成する暗号チェックサム。完全性と送信元認証を提供し、不正改ざんを検出する。'},
+  {abbr:'ASLR',domain:['D3','D8'],full_ja:'アドレス空間配置のランダム化',full_en:'Address Space Layout Randomization',
+   concept_en:'OS memory-protection process randomizing where executables load in memory. Guards against buffer-overflow and code-reuse attacks.',
+   concept_ja:'実行ファイルのメモリロード位置をランダム化するOS保護機構。バッファオーバーフロー・コード再利用攻撃を困難にする。'},
+  {abbr:'PKI',domain:['D3','D4'],full_ja:'公開鍵基盤',full_en:'Public Key Infrastructure',
+   concept_en:'System of roles, policies, and tech for managing digital certificates and public-key encryption to enable secure electronic information transfer.',
+   concept_ja:'デジタル証明書と公開鍵暗号を管理する体系。安全な電子情報転送を可能にする役割・ポリシー・技術の集合体。'},
+  {abbr:'CIA',domain:['D1'],full_ja:'機密性・完全性・可用性トライアド',full_en:'Confidentiality, Integrity, Availability Triad',
+   concept_en:'Three core pillars of information security: Confidentiality (preventing unauthorized disclosure), Integrity (ensuring accuracy), Availability (ensuring timely access).',
+   concept_ja:'情報セキュリティの三本柱。機密性（不正開示防止）・完全性（正確性確保）・可用性（適時アクセス保証）。全セキュリティ施策の基盤。'},
+  {abbr:'IDS',domain:['D4','D7'],full_ja:'侵入検知システム',full_en:'Intrusion Detection System',
+   concept_en:'Monitors network/system for malicious activity or policy violations and generates alerts. Passive — does not block. Types: NIDS (network) vs HIDS (host).',
+   concept_ja:'悪意あるアクティビティやポリシー違反を監視しアラートを生成。パッシブ（遮断なし）。NIDS（ネットワーク型）とHIDS（ホスト型）がある。'},
+  {abbr:'BCP',domain:['D1','D7'],full_ja:'事業継続計画',full_en:'Business Continuity Planning',
+   concept_en:'Proactive planning ensuring critical business functions continue during/after a disaster. Broader than DRP; focuses on entire business, not just IT.',
+   concept_ja:'災害時・後も重要業務を継続させるための事前計画プロセス。DRPより広義でITだけでなく事業全体に焦点を当てる。'},
+  {abbr:'MFA',domain:['D1','D5'],full_ja:'多要素認証',full_en:'Multi-Factor Authentication',
+   concept_en:'Authentication requiring 2+ factors from distinct categories: something you know, have, or are (biometrics). Greatly reduces credential-based attacks.',
+   concept_ja:'知識・所持・生体の異なるカテゴリから2つ以上の要素を要求する認証方式。パスワード単体より大幅に不正アクセスリスクを低減する。'},
+  {abbr:'RBAC',domain:['D3','D5'],full_ja:'ロールベースアクセス制御',full_en:'Role-Based Access Control',
+   concept_en:'Grants permissions to roles, not individuals. Users inherit access rights via roles aligned with job functions. Simplifies administration at scale.',
+   concept_ja:'個人ではなくロールに権限を付与するモデル。ユーザーは業務対応ロールを通じ権限を継承。大規模環境での管理を大幅に簡素化する。'},
+  {abbr:'SDLC',domain:['D8'],full_ja:'システム開発ライフサイクル',full_en:'Software Development Life Cycle',
+   concept_en:'Structured process: Planning, Requirements, Design, Development, Testing, Deployment, Maintenance. Security integrated at every phase (Secure SDLC/DevSecOps).',
+   concept_ja:'計画・要件・設計・開発・テスト・展開・保守の構造化プロセス。各フェーズにセキュリティを統合する（Secure SDLC/DevSecOps）ことが重要。'},
+];
+const st={cards:[],queue:[],idx:0,flipped:false,lang:'en',rev:false,dom:new Set(['All']),cur:null,itab:'json'};
+const genId=(a,j)=>`${a}__${j}`;
+const sf=v=>String(v??'');
+const hasDup=a=>st.cards.filter(c=>c.abbr===a).length>1;
+const DC={D1:'#f87171',D2:'#fb923c',D3:'#fbbf24',D4:'#34d399',D5:'#22d3ee',D6:'#60a5fa',D7:'#a78bfa',D8:'#f472b6'};
+const dc=d=>DC[d]||'#94a3b8';
+const toRgba=(hex,a)=>{const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);return r?`rgba(${parseInt(r[1],16)},${parseInt(r[2],16)},${parseInt(r[3],16)},${a})`:`rgba(148,163,184,${a})`;};
+let _tt;
+function toast(msg,ms=2200){clearTimeout(_tt);const e=document.getElementById('toast');e.textContent=msg;e.classList.add('on');_tt=setTimeout(()=>e.classList.remove('on'),ms);}
+function save(){try{localStorage.setItem(SK,JSON.stringify(st.cards));}catch{toast('保存エラー');}}
+function load(){try{const raw=localStorage.getItem(SK);if(!raw){imp(SEED);return;}st.cards=JSON.parse(raw).map(c=>({...c,id:c.id||genId(c.abbr,c.full_ja),level:c.level??0}));}catch{st.cards=[];imp(SEED);}}
+function imp(arr){let added=0,upd=0;arr.forEach(r=>{if(!r.abbr||!r.full_ja||!r.full_en||!r.concept_en||!r.concept_ja)return;const dom=Array.isArray(r.domain)?r.domain:sf(r.domain).split(',').map(s=>s.trim()).filter(Boolean);const c={abbr:sf(r.abbr).trim(),domain:dom.map(sf),full_ja:sf(r.full_ja).trim(),full_en:sf(r.full_en).trim(),concept_en:sf(r.concept_en).trim(),concept_ja:sf(r.concept_ja).trim()};c.id=genId(c.abbr,c.full_ja);const ei=st.cards.findIndex(x=>x.id===c.id);if(ei>=0){c.level=st.cards[ei].level??0;st.cards[ei]=c;upd++;}else{c.level=0;st.cards.push(c);added++;}});save();return{added,upd};}
+function bq(){let pool=st.dom.has('All')?st.cards:st.cards.filter(c=>c.domain.some(d=>st.dom.has(d)));pool=[...pool].sort((a,b)=>a.level-b.level);st.queue=pool.map(c=>c.id);st.idx=0;}
+const cc=()=>st.idx<st.queue.length?st.cards.find(c=>c.id===st.queue[st.idx])||null:null;
+function render(){const card=cc();const scene=document.getElementById('scene'),ept=document.getElementById('ept'),cmp=document.getElementById('cmp'),acts=document.getElementById('acts'),hint=document.getElementById('hint'),ctr=document.getElementById('ctr');scene.style.display='none';ept.classList.remove('on');cmp.classList.remove('on');acts.style.visibility='visible';hint.style.visibility='visible';if(!st.cards.length){ept.classList.add('on');acts.style.visibility='hidden';hint.style.visibility='hidden';ctr.textContent='- / -';updP();updH();return;}if(!card){cmp.classList.add('on');acts.style.visibility='hidden';hint.style.visibility='hidden';rCmp();ctr.textContent='完了';updP();updH();return;}scene.style.display='';st.cur=card;const c3=document.getElementById('c3d');c3.classList.remove('flip');c3.style.transform='';st.flipped=false;setL('en',null,true);st.rev?rRev(card):rNorm(card);ctr.textContent=`${st.idx+1} / ${st.queue.length}`;updP();updH();}
+function badges(el,doms){el.innerHTML='';doms.forEach(d=>{const b=document.createElement('span');b.className='badge';b.textContent=d;b.style.color=dc(d);b.style.background=toRgba(dc(d),.15);el.appendChild(b);});}
+function rNorm(c){badges(document.getElementById('fdm'),c.domain);const fa=document.getElementById('fabbr');fa.className='fabbr';fa.textContent=c.abbr;const fja=document.getElementById('ffja');if(hasDup(c.abbr)){fja.textContent=c.full_ja;fja.style.display='';}else{fja.style.display='none';}rDots(c.level);document.getElementById('babbr').textContent=c.abbr;badges(document.getElementById('bdm'),c.domain);document.getElementById('ben').textContent=c.full_en;document.getElementById('ltog').style.display='';rConcept();}
+function rRev(c){badges(document.getElementById('fdm'),c.domain);const fa=document.getElementById('fabbr');fa.className='fabbr rv';fa.textContent=c.concept_en;document.getElementById('ffja').style.display='none';rDots(c.level);document.getElementById('babbr').textContent=c.abbr;badges(document.getElementById('bdm'),c.domain);document.getElementById('ben').textContent=c.full_en;document.getElementById('ltog').style.display='none';const ct=document.getElementById('ctxt');ct.className='ctxt ja';ct.textContent=c.full_ja;}
+function rConcept(){if(!st.cur||st.rev)return;const ct=document.getElementById('ctxt');ct.className=st.lang==='en'?'ctxt en':'ctxt ja';ct.textContent=st.lang==='en'?st.cur.concept_en:st.cur.concept_ja;}
+function rDots(lv){const c=document.getElementById('ldots');c.innerHTML='';for(let i=0;i<2;i++){const d=document.createElement('div');d.className='ldot'+(i<lv?(lv===1?' l1':' l2'):'');c.appendChild(d);}}
+function updP(){const t=st.queue.length,d=st.idx;document.getElementById('pfill').style.width=(t?d/t*100:0)+'%';document.getElementById('plbl').textContent=`${d} / ${t}`;const l0=st.cards.filter(c=>c.level===0).length,l1=st.cards.filter(c=>c.level===1).length,l2=st.cards.filter(c=>c.level===2).length;document.getElementById('pstat').textContent=`未: ${l0} | 復: ${l1} | 済: ${l2}`;}
+function updH(){const t=st.cards.length,f=st.queue.length;document.getElementById('hcount').textContent=st.dom.has('All')?`${t} cards`:`${f}/${t}`;}
+function rCmp(){const g=document.getElementById('sgrid');const inD=c=>st.dom.has('All')||c.domain.some(d=>st.dom.has(d));const pool=st.cards.filter(inD);const l0=pool.filter(c=>c.level===0).length,l1=pool.filter(c=>c.level===1).length,l2=pool.filter(c=>c.level===2).length;g.innerHTML=[{v:l0,l:'未習得',cls:'s0'},{v:l1,l:'要復習',cls:'s1'},{v:l2,l:'定着済',cls:'s2'}].map(s=>`<div class="sitem ${s.cls}"><div class="snum">${s.v}</div><div class="slbl">${s.l}</div></div>`).join('');}
+function onCC(e){if(e.target.closest('.ltog'))return;if(!cc())return;st.flipped=!st.flipped;document.getElementById('c3d').classList.toggle('flip',st.flipped);}
+function doA(){const card=cc();if(!card)return;const i=st.cards.findIndex(c=>c.id===card.id);if(i>=0){st.cards[i].level=1;save();}const id=st.queue.splice(st.idx,1)[0];st.queue.push(id);render();}
+function doG(){const card=cc();if(!card)return;const i=st.cards.findIndex(c=>c.id===card.id);if(i>=0){st.cards[i].level=Math.min(2,(st.cards[i].level||0)+1);save();}st.idx++;render();}
+let tx=0,ty=0,sw=false;
+const SWPT=75,SWPY=55;
+const caEl=document.getElementById('ca');
+caEl.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;sw=false;},{passive:true});
+caEl.addEventListener('touchmove',e=>{if(!cc())return;const dx=e.touches[0].clientX-tx,dy=Math.abs(e.touches[0].clientY-ty);if(dy>SWPY)return;const adx=Math.abs(dx);if(adx>12){sw=true;const p=Math.min(adx/SWPT,1);document.getElementById('sig').style.opacity=dx>0?p:0;document.getElementById('sia').style.opacity=dx<0?p:0;if(!st.flipped)document.getElementById('c3d').style.transform=`rotateY(${dx*.04}deg) translateX(${dx*.15}px)`;}},{passive:true});
+caEl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=Math.abs(e.changedTouches[0].clientY-ty);document.getElementById('sig').style.opacity=0;document.getElementById('sia').style.opacity=0;if(!st.flipped)document.getElementById('c3d').style.transform='';if(!sw||dy>SWPY||!cc()){sw=false;return;}if(dx>SWPT)doG();else if(dx<-SWPT)doA();sw=false;},{passive:true});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;if(e.key===' '||e.key==='Enter'){e.preventDefault();if(!cc())return;st.flipped=!st.flipped;document.getElementById('c3d').classList.toggle('flip',st.flipped);}else if(e.key==='ArrowRight'){e.preventDefault();doG();}else if(e.key==='ArrowLeft'){e.preventDefault();doA();}});
+function togD(d){if(d==='All'){st.dom=new Set(['All']);}else{if(st.dom.has('All'))st.dom=new Set();st.dom.has(d)?st.dom.delete(d):st.dom.add(d);if(!st.dom.size)st.dom=new Set(['All']);}document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',st.dom.has(c.dataset.d)));bq();render();}
+function setMode(r){st.rev=!!r;document.getElementById('bNorm').classList.toggle('on',!r);document.getElementById('bRev').classList.toggle('on',!!r);bq();render();}
+function setL(l,e,s){if(e)e.stopPropagation();st.lang=l;document.getElementById('bEN').classList.toggle('on',l==='en');document.getElementById('bJA').classList.toggle('on',l==='ja');if(!s)rConcept();}
+function restart(u){bq();if(u)st.queue=st.queue.filter(id=>{const c=st.cards.find(c=>c.id===id);return c&&c.level<2;});render();}
+function openM(n){document.getElementById('m-'+n).classList.add('on');if(n==='settings'){const l0=st.cards.filter(c=>c.level===0).length,l1=st.cards.filter(c=>c.level===1).length,l2=st.cards.filter(c=>c.level===2).length;document.getElementById('dinfo').textContent=`全${st.cards.length}枚 (未:${l0} 復:${l1} 済:${l2})`;}}
+function closeM(n){document.getElementById('m-'+n).classList.remove('on');}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
+function setIT(t){st.itab=t;document.getElementById('itj').classList.toggle('on',t==='json');document.getElementById('itt').classList.toggle('on',t==='tsv');document.getElementById('iJ').style.display=t==='json'?'':'none';document.getElementById('iT').style.display=t==='tsv'?'':'none';}
+function impJ(){const raw=document.getElementById('taJ').value.trim();if(!raw){toast('JSONデータを入力してください');return;}let p;try{p=JSON.parse(raw);if(!Array.isArray(p))p=[p];}catch(e){toast('JSON解析エラー: '+e.message);return;}const{added,upd}=imp(p);bq();render();closeM('import');document.getElementById('taJ').value='';toast(`追加 ${added}件 / 更新 ${upd}件`);}
+function impT(){const raw=document.getElementById('taT').value.trim();if(!raw){toast('データを入力してください');return;}const cards=raw.split('\n').filter(l=>l.trim()).map(line=>{const isT=line.includes('\t');const cols=isT?line.split('\t'):line.split(',');if(cols.length<6)return null;const[a,ds,fj,fe,ce,...rest]=cols;const cj=rest.join(isT?'\t':',');return{abbr:a.trim(),domain:ds.split(',').map(s=>s.trim()).filter(Boolean),full_ja:fj.trim(),full_en:fe.trim(),concept_en:ce.trim(),concept_ja:cj.trim()};}).filter(Boolean);if(!cards.length){toast('有効なデータが見つかりませんでした');return;}const{added,upd}=imp(cards);bq();render();closeM('import');document.getElementById('taT').value='';toast(`追加 ${added}件 / 更新 ${upd}件`);}
+function doExp(){const json=JSON.stringify(st.cards,null,2);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`cissp-deck-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);toast('エクスポートしました');}
+function doRst(){if(!confirm('進捗をリセットしますか？'))return;st.cards=st.cards.map(c=>({...c,level:0}));save();bq();render();closeM('settings');toast('進捗をリセットしました');}
+function doClr(){if(!confirm('全カードを削除しますか？（元に戻せません）'))return;st.cards=[];save();bq();render();closeM('settings');toast('削除しました');}
+if('serviceWorker'in navigator){const b=new Blob([`const C='cqm1';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('fetch',e=>{e.respondWith(caches.open(C).then(c=>c.match(e.request).then(r=>r||fetch(e.request))));});`],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b)).catch(()=>{});}
+load();bq();render();
+</script>
+</body>
+</html>
