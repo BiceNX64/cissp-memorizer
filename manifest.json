@@ -1,0 +1,19 @@
+{
+"name": "CISSP Quick Memorizer",
+"short_name": "CISSP QM",
+"description": "CISSP試験対策 高速暗記フラッシュカード",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"orientation": "portrait",
+"background_color": "#0b0f19",
+"theme_color": "#0b0f19",
+"icons": [
+{
+"src": "icon.svg",
+"sizes": "192x192 512x512 any",
+"type": "image/svg+xml",
+"purpose": "any maskable"
+}
+]
+}
