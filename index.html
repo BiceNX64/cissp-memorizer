@@ -222,12 +222,22 @@ textarea:focus{border-color:var(--ac);}
         <label class="flbl">JSONデータを貼り付け</label>
         <textarea id="taJ" placeholder='[{"abbr":"IAM","domain":["D5"],"full_ja":"ID管理","full_en":"Identity and Access Management","concept_en":"...","concept_ja":"..."}]'></textarea>
         <button class="bp" onclick="impJ()">JSONをインポート</button>
+        <div style="text-align:center;margin-top:14px;color:var(--tm);font-size:11px;">または</div>
+        <label class="bs" style="display:flex;align-items:center;justify-content:center;margin-top:8px;">
+          <input type="file" accept=".json" style="display:none" onchange="impF(event,'json')">
+          JSONファイルを選択してインポート
+        </label>
       </div>
       <div id="iT" style="display:none">
         <label class="flbl">TSV / CSVを貼り付け（ヘッダー不要）</label>
         <div class="tsv-h">列順: 略語 | ドメイン(D1,D3) | 正式名(日) | 正式名(英) | Concept(英) | Concept(日)</div>
         <textarea id="taT" placeholder="MAC&#9;D3,D4&#9;強制アクセス制御&#9;Mandatory Access Control&#9;...&#9;..."></textarea>
         <button class="bp" onclick="impT()">TSVをインポート</button>
+        <div style="text-align:center;margin-top:14px;color:var(--tm);font-size:11px;">または</div>
+        <label class="bs" style="display:flex;align-items:center;justify-content:center;margin-top:8px;">
+          <input type="file" accept=".tsv,.csv,.txt" style="display:none" onchange="impF(event,'tsv')">
+          ファイルを選択してインポート (.tsv, .csv)
+        </label>
       </div>
     </div>
   </div>
@@ -327,6 +337,7 @@ document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.
 function setIT(t){st.itab=t;document.getElementById('itj').classList.toggle('on',t==='json');document.getElementById('itt').classList.toggle('on',t==='tsv');document.getElementById('iJ').style.display=t==='json'?'':'none';document.getElementById('iT').style.display=t==='tsv'?'':'none';}
 function impJ(){const raw=document.getElementById('taJ').value.trim();if(!raw){toast('JSONデータを入力してください');return;}let p;try{p=JSON.parse(raw);if(!Array.isArray(p))p=[p];}catch(e){toast('JSON解析エラー: '+e.message);return;}const{added,upd}=imp(p);bq();render();closeM('import');document.getElementById('taJ').value='';toast(`追加 ${added}件 / 更新 ${upd}件`);}
 function impT(){const raw=document.getElementById('taT').value.trim();if(!raw){toast('データを入力してください');return;}const cards=raw.split('\n').filter(l=>l.trim()).map(line=>{const isT=line.includes('\t');const cols=isT?line.split('\t'):line.split(',');if(cols.length<6)return null;const[a,ds,fj,fe,ce,...rest]=cols;const cj=rest.join(isT?'\t':',');return{abbr:a.trim(),domain:ds.split(',').map(s=>s.trim()).filter(Boolean),full_ja:fj.trim(),full_en:fe.trim(),concept_en:ce.trim(),concept_ja:cj.trim()};}).filter(Boolean);if(!cards.length){toast('有効なデータが見つかりませんでした');return;}const{added,upd}=imp(cards);bq();render();closeM('import');document.getElementById('taT').value='';toast(`追加 ${added}件 / 更新 ${upd}件`);}
+function impF(e,t){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{if(t==='json'){document.getElementById('taJ').value=ev.target.result;impJ();}else{document.getElementById('taT').value=ev.target.result;impT();}e.target.value='';};r.readAsText(f);}
 function doExp(){const json=JSON.stringify(st.cards,null,2);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`cissp-deck-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);toast('エクスポートしました');}
 function doRst(){if(!confirm('進捗をリセットしますか？'))return;st.cards=st.cards.map(c=>({...c,level:0}));save();bq();render();closeM('settings');toast('進捗をリセットしました');}
 function doClr(){if(!confirm('全カードを削除しますか？（元に戻せません）'))return;st.cards=[];save();bq();render();closeM('settings');toast('削除しました');}
