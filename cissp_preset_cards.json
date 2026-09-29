@@ -1,0 +1,226 @@
+[
+{
+"abbr": "BIA",
+"domain": ["D1"],
+"full_ja": "事業影響度分析",
+"full_en": "Business Impact Analysis",
+"concept_en": "Identifies critical business functions and assesses qualitative and quantitative disruption impacts to establish MTD, RTO, and RPO.",
+"concept_ja": "事業停止に伴う損失を評価し、BCP策定の基礎となる復旧優先度（RTO/RPO）や許容最大停止時間を算出する分析。"
+},
+{
+"abbr": "RTO",
+"domain": ["D1"],
+"full_ja": "目標復旧時間",
+"full_en": "Recovery Time Objective",
+"concept_en": "The maximum acceptable duration of system downtime after a disruption before business operations are restored.",
+"concept_ja": "インシデント発生から業務やシステムを復旧させるまでに許容される最大経過時間。"
+},
+{
+"abbr": "RPO",
+"domain": ["D1"],
+"full_ja": "目標復旧時点",
+"full_en": "Recovery Point Objective",
+"concept_en": "The maximum acceptable amount of data loss measured in time backward from the incident point.",
+"concept_ja": "障害発生時に許容できるデータの最大損失限界時点（バックアップ頻度を決定する基準）。"
+},
+{
+"abbr": "ALE",
+"domain": ["D1"],
+"full_ja": "年間予想損失額",
+"full_en": "Annualized Loss Expectancy",
+"concept_en": "The monetized expected loss from a specific risk over one year, calculated as $ALE = SLE \times ARO$.",
+"concept_ja": "特定のリスクによって1年間に想定される推定金銭的損失。計算式は $ALE = SLE \times ARO$。"
+},
+{
+"abbr": "SLE",
+"domain": ["D1"],
+"full_ja": "単一損失期待値",
+"full_en": "Single Loss Expectancy",
+"concept_en": "The expected monetary loss each time a specific threat exploits a vulnerability, calculated as $SLE = AV \times EF$.",
+"concept_ja": "インシデントが1回発生した際に生じる想定損失額。計算式は $SLE = AV \times EF$。"
+},
+{
+"abbr": "ARO",
+"domain": ["D1"],
+"full_ja": "年間発生率",
+"full_en": "Annualized Rate of Occurrence",
+"concept_en": "The estimated frequency or number of times a specific threat event is expected to occur per year.",
+"concept_ja": "特定のリスク・脅威が1年間に発生すると予測される推定回数・頻度。"
+},
+{
+"abbr": "DLP",
+"domain": ["D2"],
+"full_ja": "データ損失防止",
+"full_en": "Data Loss Prevention",
+"concept_en": "Solutions designed to detect, monitor, and prevent unauthorized exfiltration or exposure of sensitive data in use, in transit, or at rest.",
+"concept_ja": "機密情報の不正持ち出しや漏洩を、利用中・転送中・保存中の各状態で検知・遮断するシステム。"
+},
+{
+"abbr": "DRM",
+"domain": ["D2"],
+"full_ja": "デジタル著作権管理",
+"full_en": "Digital Rights Management",
+"concept_en": "A systematic approach to copyright protection for digital media by controlling access, copying, and distribution using persistent encryption.",
+"concept_ja": "暗号化とライセンス管理を用いてデジタル著作物の無断複製・配布・閲覧を永続的に制御する仕組み。"
+},
+{
+"abbr": "MAC",
+"domain": ["D3"],
+"full_ja": "強制アクセス制御",
+"full_en": "Mandatory Access Control",
+"concept_en": "A non-discretionary access model where access is strictly enforced by the OS kernel based on security clearances and classification labels.",
+"concept_ja": "セキュリティラベルとクリアランスに基づき、OSが一元的に強制適用するアクセス制御モデル。軍用等に採用。"
+},
+{
+"abbr": "MAC",
+"domain": ["D3", "D4"],
+"full_ja": "メッセージ認証コード",
+"full_en": "Message Authentication Code",
+"concept_en": "A fixed-size cryptographic checksum generated using a symmetric key that guarantees message data integrity and authenticity.",
+"concept_ja": "共通鍵を用いてメッセージから生成される暗号学的チェックサム。完全性と送信元認証を提供する。"
+},
+{
+"abbr": "ASLR",
+"domain": ["D3", "D8"],
+"full_ja": "アドレス空間配置のランダム化",
+"full_en": "Address Space Layout Randomization",
+"concept_en": "A memory exploit mitigation technique that randomizes key address space locations to thwart buffer-overflow attacks.",
+"concept_ja": "実行ファイルやスタックなどのメモリ領域配置をランダム化し、バッファオーバーフロー攻撃による不正コード実行を防ぐOS保護機能。"
+},
+{
+"abbr": "HSM",
+"domain": ["D3"],
+"full_ja": "ハードウェアセキュリティモジュール",
+"full_en": "Hardware Security Module",
+"concept_en": "A dedicated, tamper-resistant physical cryptoprocessor designed for securely generating, storing, and managing cryptographic keys.",
+"concept_ja": "耐タンパー性（物理的改ざん防止機能）を備え、暗号鍵の生成・保管・暗号演算を安全に実行する専用ハードウェア。"
+},
+{
+"abbr": "TPM",
+"domain": ["D3"],
+"full_ja": "トラステッドプラットフォームモジュール",
+"full_en": "Trusted Platform Module",
+"concept_en": "A dedicated microchip on the motherboard that provides hardware root-of-trust, platform integrity measurement, and disk key storage.",
+"concept_ja": "マザーボードに組み込まれた暗号チップ。ハードウェアルートオブトラストの確立やプラットフォームの完全性検証を担う。"
+},
+{
+"abbr": "SOC",
+"domain": ["D1", "D3"],
+"full_ja": "受託業務統制報告書",
+"full_en": "Service Organization Control",
+"concept_en": "Standardized audit frameworks (SOC 1/2/3) assessing service organization internal controls over financial reporting or trust services criteria.",
+"concept_ja": "外部受託サービス事業者の内部統制やセキュリティを、第三者監査人が評価・保証する一連の監査報告基準。"
+},
+{
+"abbr": "SOC",
+"domain": ["D7"],
+"full_ja": "セキュリティ運用拠点",
+"full_en": "Security Operations Center",
+"concept_en": "A centralized team and facility that continuously monitors, detects, analyzes, and responds to cybersecurity incidents.",
+"concept_ja": "情報セキュリティインシデントの監視・検知・分析・初動対応を24時間体制で集中的に行う組織・拠点。"
+},
+{
+"abbr": "TLS",
+"domain": ["D3", "D4"],
+"full_ja": "トランスポート層セキュリティ",
+"full_en": "Transport Layer Security",
+"concept_en": "A cryptographic protocol operating at the transport layer providing confidentiality, data integrity, and server authentication.",
+"concept_ja": "トランスポート層の上で通信を暗号化し、エンドツーエンドの機密性・完全性・サーバ認証を提供する標準プロトコル。"
+},
+{
+"abbr": "CASB",
+"domain": ["D4"],
+"full_ja": "クラウドアクセスセキュリティブローカー",
+"full_en": "Cloud Access Security Broker",
+"concept_en": "An on-premises or cloud-hosted policy enforcement point providing visibility, data protection, and compliance across cloud services.",
+"concept_ja": "組織とクラウドサービスの間に介在し、シャドーITの可視化、データ保護、コンプライアンスを一括適用するゲートウェイ。"
+},
+{
+"abbr": "SASE",
+"domain": ["D4"],
+"full_ja": "セキュアアクセスサービスエッジ",
+"full_en": "Secure Access Service Edge",
+"concept_en": "An enterprise architecture converging wide-area networking (SD-WAN) and cloud-native security services (CASB, SWG, ZTNA).",
+"concept_ja": "広域WAN機能（SD-WAN等）と包括的なクラウドセキュリティサービス（ZTNA, CASB等）をクラウド上で一体化して提供する設計モデル。"
+},
+{
+"abbr": "WAF",
+"domain": ["D4", "D8"],
+"full_ja": "Webアプリケーションファイアウォール",
+"full_en": "Web Application Firewall",
+"concept_en": "A specialized Layer 7 filter inspecting HTTP/HTTPS traffic to prevent application exploits such as SQL injection and XSS.",
+"concept_ja": "OSI参照モデルの第7層でトラフィックを検査し、SQLインジェクションやXSSなどのWeb攻撃を検知・遮断する装置。"
+},
+{
+"abbr": "IPsec",
+"domain": ["D4"],
+"full_ja": "IPセキュリティ",
+"full_en": "Internet Protocol Security",
+"concept_en": "A protocol suite operating at the Network Layer (Layer 3) providing authentication (AH) and encryption (ESP) for secure IP communications.",
+"concept_ja": "ネットワーク層（Layer 3）でIP通信を保護するプロトコル群。AH（認証）とESP（暗号化）によりVPN等を実現する。"
+},
+{
+"abbr": "RBAC",
+"domain": ["D5"],
+"full_ja": "役割ベースアクセス制御",
+"full_en": "Role-Based Access Control",
+"concept_en": "An access control mechanism assigning permissions to defined organizational roles rather than to individual users.",
+"concept_ja": "個々のユーザーではなく、組織内の役職・役割（ロール）に対してアクセス権限を付与し管理を簡素化するアクセス制御方式。"
+},
+{
+"abbr": "ABAC",
+"domain": ["D5"],
+"full_ja": "属性ベースアクセス制御",
+"full_en": "Attribute-Based Access Control",
+"concept_en": "A dynamic access control model evaluating user, resource, action, and contextual environmental attributes against declarative policies.",
+"concept_ja": "ユーザー属性、リソース属性、環境条件（時刻やアクセス元）を総合評価して動的にアクセス可否を判定する方式。"
+},
+{
+"abbr": "SAML",
+"domain": ["D5"],
+"full_ja": "セキュリティ表明マークアップ言語",
+"full_en": "Security Assertion Markup Language",
+"concept_en": "An XML-based standard for exchanging authentication and authorization assertions between an Identity Provider (IdP) and Service Provider (SP).",
+"concept_ja": "IdPとSPの間で認証・認可トークンをXML形式でやり取りし、主にブラウザベースのWeb SSOを実現する標準規格。"
+},
+{
+"abbr": "OIDC",
+"domain": ["D5"],
+"full_ja": "オープンIDコネクト",
+"full_en": "OpenID Connect",
+"concept_en": "An identity verification layer built on OAuth 2.0 enabling clients to verify user identity and obtain profile claims using JSON Web Tokens (JWT).",
+"concept_ja": "OAuth 2.0認可フレームワークの上に構築された認証プロトコル。JSON Web Token（JWT）を用いてユーザーID認証を行う。"
+},
+{
+"abbr": "SAST",
+"domain": ["D6", "D8"],
+"full_ja": "静的アプリケーションセキュリティテスト",
+"full_en": "Static Application Security Testing",
+"concept_en": "A white-box software testing methodology analyzing source code or compiled binaries for vulnerabilities without running the application.",
+"concept_ja": "プログラムを実行せずにソースコードを直接スキャンし、開発初期段階でセキュリティ欠陥を検知するホワイトボックステスト。"
+},
+{
+"abbr": "DAST",
+"domain": ["D6", "D8"],
+"full_ja": "動的アプリケーションセキュリティテスト",
+"full_en": "Dynamic Application Security Testing",
+"concept_en": "A black-box testing methodology analyzing running applications from the outside by injecting fault-inducing attacks to detect runtime flaws.",
+"concept_ja": "稼働中のWebアプリケーションに対し外部から疑似攻撃を送信し、実行時にしか現れない脆弱性を検証するブラックボックステスト。"
+},
+{
+"abbr": "SIEM",
+"domain": ["D7"],
+"full_ja": "セキュリティ情報イベント管理",
+"full_en": "Security Information and Event Management",
+"concept_en": "A centralized platform aggregating, normalizing, and correlating event log data across disparate systems in real time to detect security threats.",
+"concept_ja": "各種機器やサーバのログを一元集約・相関分析し、リアルタイムにインシデントや脅威を検知・通知する仕組み。"
+},
+{
+"abbr": "SOAR",
+"domain": ["D7"],
+"full_ja": "セキュリティ運用の自動化・オーケストレーション",
+"full_en": "Security Orchestration, Automation, and Response",
+"concept_en": "A technology stack that integrates disparate security tools to automate incident investigation and remediation workflows via playbooks.",
+"concept_ja": "各種セキュリティ機器を連携させ、インシデント対応の手順をプレイブック化して初動対応を自動化するソリューション。"
+}
+]
