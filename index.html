@@ -8,6 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="description" content="CISSP試験の略語・重要概念を高速周回するモバイル特化型フラッシュカードアプリ">
 <title>CISSP Quick Memorizer</title>
+<!-- PWA Manifest & App Icons -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
 <style>
 :root{
   --bg:#0b0f19;--bg2:#111827;--bg3:#1a2235;
@@ -341,7 +345,11 @@ function impF(e,t){const f=e.target.files[0];if(!f)return;const r=new FileReader
 function doExp(){const json=JSON.stringify(st.cards,null,2);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`cissp-deck-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);toast('エクスポートしました');}
 function doRst(){if(!confirm('進捗をリセットしますか？'))return;st.cards=st.cards.map(c=>({...c,level:0}));save();bq();render();closeM('settings');toast('進捗をリセットしました');}
 function doClr(){if(!confirm('全カードを削除しますか？（元に戻せません）'))return;st.cards=[];save();bq();render();closeM('settings');toast('削除しました');}
-if('serviceWorker'in navigator){const b=new Blob([`const C='cqm1';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('fetch',e=>{e.respondWith(caches.open(C).then(c=>c.match(e.request).then(r=>r||fetch(e.request))));});`],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(b)).catch(()=>{});}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
+  });
+}
 load();bq();render();
 </script>
 </body>
